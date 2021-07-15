@@ -1,0 +1,10 @@
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\bin\Debug\ConexionSAP.exe.config
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\bin\Debug\ConexionSAP.exe
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\bin\Debug\ConexionSAP.pdb
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\bin\Debug\SAPBusinessOneSDK.dll
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.csprojResolveAssemblyReference.cache
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.Form1.resources
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.Properties.Resources.resources
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.csproj.GenerateResource.Cache
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.exe
+C:\Users\User-02\Desktop\CursoSAP-SDK\ConexionSAP\ConexionSAP\obj\Debug\ConexionSAP.pdb
