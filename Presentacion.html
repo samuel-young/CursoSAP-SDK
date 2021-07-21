@@ -20,7 +20,7 @@
 </style>
 
 		<meta name="csrf-param" content="authenticity_token" />
-<meta name="csrf-token" content="/vh08W85n6DTO4/BFSFahOSsm6vwQHbchZ4yg4iHIhcVa4lf+qm5WLTWgpNQQx0/LexEnWqK3TlCqgKvRNNqJQ==" />
+<meta name="csrf-token" content="sbw8fte981VMMTTtDsefFBdVkdm4vLzBoxdHvda9Ef9aL8HQQi3VrSvcOb9Lpdiv3hVO7yJ2FyRkI3eRGulZzQ==" />
 		<style id="user-css-output" type="text/css"></style>
 	</head>
 	<body class="reveal-viewport theme-font-montserrat theme-color-grey-blue"">
@@ -154,13 +154,55 @@ catch(Exception e)
       oItem = null;
     }
   }
+}</code></pre></div></div></section><section data-id="6b327f55a8f1655d185cf0d2ac0d1e34"><div class="sl-block" data-block-type="text" style="width: 806px; left: 56.595px; top: 0px; height: auto;" data-block-id="23315eda45e5359d095df491955c47b8"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 76%;">
+<h1>
+<span style="font-size:0.7em">Transactional Data Objects:</span> Documents</h1>
+</div></div>
+<div class="sl-block" data-block-type="image" data-name="image-5d7ae9" data-block-id="1903f9cf13359cc2d5912a93b605f323" style="width: 561.452px; height: 538.187px; left: 199.274px; top: 140px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="724" data-natural-height="694" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8778081/pasted-from-clipboard.png"></div></div></section><section data-id="ec16c60a8944362ab082f635fa3ed464"><div class="sl-block" data-block-type="text" style="width: 806px; left: 63.3242px; top: 48.2256px; height: auto;" data-block-id="d5c3e62f1e8715df26d10df5f27f67d6"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 76%;">
+<h1> Document: Orders</h1>
+</div></div>
+<div class="sl-block" data-block-type="code" data-name="code-a146c5" data-block-id="56a25ce8a4075a7e2332b1d9e3fb24ba" style="width: 913.842px; height: 534.958px; left: 11.303px; top: 140px;"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="osx" style="z-index: 11;"><pre class="cs" style="font-size: 16px; line-height: 19px;"><code data-line-numbers="">SAPbobsCOM.Documents Pedido=null;
+try
+{
+    Pedido = (SAPbobsCOM.Documents)this.oCom.GetBusinessObject(BoObjectTypes.oOrders);
+    Pedido.CardCode = "CL01";
+    Pedido.DocDate = DateTime.Now;
+    Pedido.DocDueDate = DateTime.Now;
+
+    Pedido.Lines.ItemCode = "IT4321";
+    Pedido.Lines.Quantity = 1;
+
+    Pedido.Lines.Add();
+
+    Pedido.Lines.ItemCode = "IT8976";
+    Pedido.Lines.Quantity = 1;
+
+    if (Pedido.Add() != 0)
+    {
+      return this.oCom.GetLastErrorDescription();
+    }else
+    {
+      DocEntry = this.oCom.GetNewObjectKey();
+      return "";
+    }
+}catch(Exception e)
+{
+	return e.Message;
+}
+finally
+{
+    if (Pedido != null)
+    {
+      System.Runtime.InteropServices.Marshal.ReleaseComObject(Pedido);
+      Pedido = null;
+    }
 }</code></pre></div></div></section>
 			</div>
 		</div>
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null,"editor_grid":true,"editor_grid_on_top":false,"editor_snap":true,"editor_fixed_notes":false,"developer_mode":false,"speaker_layout":null,"speaker_theme":null,"phone_number":null,"phone_country_code":null,"media_sources":null,"export_controls":null,"export_slide_number":null,"export_slide_notes":null,"export_separate_fragments":null,"auto_animate_tutorial_completed":null,"profile_sorting":"created","profile_layout":"grid"},"email":"roquememo11@gmail.com","notify_on_receipt":true,"billing_address":null,"billing_vat_id":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":null,"storage_used":279317,"storage_limit":262144000,"image_upload_limit":10485760,"video_upload_limit":104857600},"deck":{"id":2181189,"slug":"sap-business-one-sdk-71db78","title":"Copy of SAP Business One SDK","description":"","width":960,"height":700,"margin":0.05,"visibility":"all","published_at":"2021-07-13T01:05:35.639Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/aad9105b75d5b2fad3993fb21486218f/thumb.jpg?1626125334","view_count":0,"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"default","theme_id":null,"theme_font":"montserrat","theme_color":"grey-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"shuffle":null,"should_loop":false,"share_notes":null,"slide_number":null,"slide_count":10,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":null,"data_updated_at":1626378012478,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":null,"notes":{}},"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}}};
+	var SLConfig = {"current_user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null,"editor_grid":true,"editor_grid_on_top":false,"editor_snap":true,"editor_fixed_notes":false,"developer_mode":false,"speaker_layout":null,"speaker_theme":null,"phone_number":null,"phone_country_code":null,"media_sources":null,"export_controls":null,"export_slide_number":null,"export_slide_notes":null,"export_separate_fragments":null,"auto_animate_tutorial_completed":null,"profile_sorting":"created","profile_layout":"grid"},"email":"roquememo11@gmail.com","notify_on_receipt":true,"billing_address":null,"billing_vat_id":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":null,"storage_used":379847,"storage_limit":262144000,"image_upload_limit":10485760,"video_upload_limit":104857600},"deck":{"id":2181189,"slug":"sap-business-one-sdk-71db78","title":"Copy of SAP Business One SDK","description":"","width":960,"height":700,"margin":0.05,"visibility":"all","published_at":"2021-07-13T01:05:35.639Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/aad9105b75d5b2fad3993fb21486218f/thumb.jpg?1626125334","view_count":0,"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"default","theme_id":null,"theme_font":"montserrat","theme_color":"grey-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"shuffle":null,"should_loop":false,"share_notes":null,"slide_number":null,"slide_count":12,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":null,"data_updated_at":1626811271671,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":null,"notes":{}},"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}}};
 </script>
 
 		<script>
