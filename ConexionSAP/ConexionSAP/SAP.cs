@@ -725,7 +725,421 @@ namespace ConexionSAP
             }
         }
 
+        public void CrearFacturaConDocumentoBase(out string DocEntry, string DocNumPedido)
+        {
+            DocEntry = "";
+            SAPbobsCOM.Documents oFacturas = null;
+            SAPbobsCOM.Recordset oRecord = null;
+            try
+            {
+                this.Error = "";
+                oFacturas = (SAPbobsCOM.Documents)this.oCom.GetBusinessObject(BoObjectTypes.oInvoices);
+                oRecord = (SAPbobsCOM.Recordset)this.oCom.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+
+                oRecord.DoQuery("SELECT " +
+                                "T0.[CardCode], "+
+                                "T0.[DocEntry] AS 'N. Interno', " +
+                                "T1.[LineNum] AS 'Linea', " +
+                                "T1.[TaxCode] AS 'Impuesto' " +
+                                "FROM[dbo].[ORDR] T0 " +
+                                "INNER JOIN[dbo].[RDR1] T1 ON T0.[DocEntry] = T1.[DocEntry] " +
+                                "WHERE " +
+                                "T0.[DocStatus] = 'O' " +
+                                "AND T0.[DocEntry] = 556  ");
+
+                if (oRecord.RecordCount > 0)
+                {
+                    oRecord.MoveFirst();
+                    oFacturas.CardCode = oRecord.Fields.Item("CardCode").Value.ToString();
+                    oFacturas.DocDate = DateTime.Today;
+                    oFacturas.DocDueDate = DateTime.Today;
+
+                    for (int i = 1; i <= oRecord.RecordCount; i++)
+                    {
+                        if (i != 1)
+                        {
+                            oFacturas.Lines.Add();
+                        }
+                        oFacturas.Lines.BaseType = (int)SAPbobsCOM.BoObjectTypes.oOrders;
+                        oFacturas.Lines.BaseEntry = Int32.Parse(oRecord.Fields.Item("N. Interno").Value.ToString());
+                        oFacturas.Lines.BaseLine = Int32.Parse(oRecord.Fields.Item("Linea").Value.ToString()); ;
+                        oFacturas.Lines.TaxCode = oRecord.Fields.Item("Impuesto").Value.ToString();
+                        oRecord.MoveNext();
+                    }
+                }
+
+                if (oFacturas.Add() != 0)
+                {
+                    this.Error = this.oCom.GetLastErrorDescription();
+                }
+                else
+                {
+                    DocEntry = this.oCom.GetNewObjectKey();
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+
+            }
+        }
+
+
+
         #endregion
+
+        #region TRANSFERENCIAS
+
+        public void CrearTransferencia(out string Valor)
+        {
+            Valor = "";
+            SAPbobsCOM.StockTransfer oTransf = null;
+            try
+            {
+                this.Error = "";
+                oTransf = (SAPbobsCOM.StockTransfer)this.oCom.GetBusinessObject(BoObjectTypes.oStockTransfer);
+                oTransf.CardCode = "CL01";
+                oTransf.DocDate = DateTime.Today;
+                oTransf.DueDate = DateTime.Today;
+
+                oTransf.FromWarehouse = "01";
+                oTransf.ToWarehouse = "02";
+
+                oTransf.Lines.ItemCode = "A00001";
+                oTransf.Lines.Quantity = 2;
+
+                oTransf.Lines.Add();
+                oTransf.Lines.ItemCode = "A00002";
+                oTransf.Lines.Quantity = 1;
+                oTransf.Lines.FromWarehouseCode = "01";
+                oTransf.Lines.WarehouseCode = "5";
+
+                if (oTransf.Add() != 0)
+                {
+                    this.Error = this.oCom.GetLastErrorDescription();
+                }else
+                {
+                    Valor = this.oCom.GetNewObjectKey();
+                }
+
+
+            }catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oTransf != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oTransf);
+                    oTransf = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region PAGOS
+
+        public void CrearPago(out string Valor,int DocEntry)
+        {
+            Valor = "";
+            SAPbobsCOM.Payments oPago = null;
+            SAPbobsCOM.Documents oFacturaBase = null;
+            try
+            {
+                this.Error = "";
+                oPago = (SAPbobsCOM.Payments)this.oCom.GetBusinessObject(BoObjectTypes.oIncomingPayments);
+                oFacturaBase = (SAPbobsCOM.Documents)this.oCom.GetBusinessObject(BoObjectTypes.oInvoices);
+
+                if (oFacturaBase.GetByKey(DocEntry))
+                {
+                    oPago.CardCode = oFacturaBase.CardCode;
+                    oPago.DocDate = DateTime.Today;
+                    oPago.DueDate = DateTime.Today;
+
+                    //Medios de Pago
+                    //Efectivo
+                    //oPago.CashSum = oFacturaBase.DocTotal; Pagar Total de la factura
+                    oPago.CashSum = 10;
+
+                    //Transferencia
+                    oPago.TransferAccount = "_SYS00000000001";
+                    oPago.TransferDate = DateTime.Today;
+                    oPago.TransferReference = "4561278";
+                    oPago.TransferSum = 10;
+
+                    //Cheques
+                    //oPago.Checks.CheckSum = 20;
+                    //oPago.Checks.CountryCode = "GT";
+                    //oPago.Checks.BankCode = "BBANK";
+                    //oPago.Checks.AccounttNum = "8945127456";
+                    //oPago.Checks.CheckNumber = 567845125;
+                    //oPago.Checks.DueDate = DateTime.Today;
+                    //oPago.Checks.Trnsfrable = SAPbobsCOM.BoYesNoEnum.tYES;
+
+                    //TC
+                    //oPago.CreditCards.CreditCard = 3;
+                    //oPago.CreditCards.CreditCardNumber = "567845125678";
+                    //oPago.CreditCards.CardValidUntil = DateTime.Parse("10/10/2024");
+                    //oPago.CreditCards.VoucherNum = "56784523512";
+                    //oPago.CreditCards.CreditSum = 15;
+
+                    oPago.Invoices.DocEntry = oFacturaBase.DocEntry;
+                    oPago.Invoices.SumApplied = 20;
+
+
+                    if (oPago.Add() != 0)
+                    {
+                        this.Error = this.oCom.GetLastErrorDescription();
+                    }else
+                    {
+                        Valor = this.oCom.GetNewObjectKey();
+                    }
+
+                }
+                else
+                {
+                    this.Error = "Factura no existe";
+                }
+
+            }catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oPago != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oPago);
+                }
+                if (oFacturaBase != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oFacturaBase);
+                }
+                oPago = null;
+                oFacturaBase = null;
+            }
+        }
+
+        public void CrearPago(out string Valor, string DocNum)
+        {
+            Valor = "";
+            SAPbobsCOM.Payments oPago = null;
+            SAPbobsCOM.Recordset oRecord = null;
+            try
+            {
+                this.Error = "";
+                oPago = (SAPbobsCOM.Payments)this.oCom.GetBusinessObject(BoObjectTypes.oIncomingPayments);
+                oRecord = (SAPbobsCOM.Recordset)this.oCom.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecord.DoQuery("SELECT * FROM [OINV] T0 WHERE T0.[DocNum]=" + DocNum);
+
+                if (oRecord.RecordCount>0)
+                {
+                    oPago.CardCode = oRecord.Fields.Item("CardCode").Value.ToString();
+                    oPago.DocDate = DateTime.Today;
+                    oPago.DueDate = DateTime.Today;
+
+                    //Medios de Pago
+                    //Efectivo
+                    //oPago.CashSum = oFacturaBase.DocTotal; Pagar Total de la factura
+                    oPago.CashSum = Double.Parse(oRecord.Fields.Item("DocTotal").Value.ToString())-Double.Parse(oRecord.Fields.Item("PaidToDate").Value.ToString());
+
+                    //Transferencia
+                    //oPago.TransferAccount = "_SYS00000000001";
+                    //oPago.TransferDate = DateTime.Today;
+                    //oPago.TransferReference = "4561278";
+                    //oPago.TransferSum = 10;
+
+                    //Cheques
+                    //oPago.Checks.CheckSum = 20;
+                    //oPago.Checks.CountryCode = "GT";
+                    //oPago.Checks.BankCode = "BBANK";
+                    //oPago.Checks.AccounttNum = "8945127456";
+                    //oPago.Checks.CheckNumber = 567845125;
+                    //oPago.Checks.DueDate = DateTime.Today;
+                    //oPago.Checks.Trnsfrable = SAPbobsCOM.BoYesNoEnum.tYES;
+
+                    //TC
+                    //oPago.CreditCards.CreditCard = 3;
+                    //oPago.CreditCards.CreditCardNumber = "567845125678";
+                    //oPago.CreditCards.CardValidUntil = DateTime.Parse("10/10/2024");
+                    //oPago.CreditCards.VoucherNum = "56784523512";
+                    //oPago.CreditCards.CreditSum = 15;
+
+                    oPago.Invoices.DocEntry = Int32.Parse(oRecord.Fields.Item("DocEntry").Value.ToString());
+                    oPago.Invoices.SumApplied = Double.Parse(oRecord.Fields.Item("DocTotal").Value.ToString()) - Double.Parse(oRecord.Fields.Item("PaidToDate").Value.ToString());
+
+
+                    if (oPago.Add() != 0)
+                    {
+                        this.Error = this.oCom.GetLastErrorDescription();
+                    }
+                    else
+                    {
+                        Valor = this.oCom.GetNewObjectKey();
+                    }
+
+                }
+                else
+                {
+                    this.Error = "Factura no existe";
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oPago != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oPago);
+                }
+                if (oRecord != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecord);
+                }
+                oPago = null;
+                oRecord = null;
+            }
+        }
+
+        #endregion
+
+        #region RECORDSET
+
+        public void Record(out string Datos,int DocEntry)
+        {
+            Datos = "";
+            SAPbobsCOM.Recordset oRecod = null;
+            try
+            {
+                this.Error = "";
+                oRecod = (SAPbobsCOM.Recordset)this.oCom.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                oRecod.DoQuery("SELECT * FROM [OINV] T0 WHERE T0.[DocEntry]="+DocEntry.ToString());
+
+                if (oRecod.RecordCount > 0)
+                {
+                    Datos = "Cliente: "+oRecod.Fields.Item("CardCode").Value.ToString()
+                            +"-"+oRecod.Fields.Item("CardName").Value.ToString()
+                            +", Total Factura: "+oRecod.Fields.Item("DocTotal").Value.ToString();
+                }else
+                {
+                    this.Error = "No hay datos";
+                }
+
+            }catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oRecod != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRecod);
+                    oRecod = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region TRANSACTION
+
+        public void EjemploTransaction()
+        {
+            this.Error = "";
+            SAPbobsCOM.Documents oFactura = null;
+            SAPbobsCOM.Payments oPago = null;
+            try
+            {
+                oFactura = (SAPbobsCOM.Documents)this.oCom.GetBusinessObject(BoObjectTypes.oInvoices);
+                oPago = (SAPbobsCOM.Payments)this.oCom.GetBusinessObject(BoObjectTypes.oIncomingPayments);
+
+                if (!this.oCom.InTransaction)
+                {
+                    this.oCom.StartTransaction();
+                }
+                string DocEntry = "";
+                oFactura.CardCode = "CL01";
+                oFactura.DocDate = DateTime.Today;
+                oFactura.DocDueDate = DateTime.Today;
+
+                oFactura.Lines.ItemCode = "A00001";
+                oFactura.Lines.Quantity = 1;
+                oFactura.Lines.TaxCode = "IVA";
+
+                if (oFactura.Add() != 0)
+                {
+                    this.Error = this.oCom.GetLastErrorDescription();
+                    if (this.oCom.InTransaction)
+                    {
+                        this.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
+                    }
+                }else
+                {
+                    DocEntry = this.oCom.GetNewObjectKey();
+
+                    oPago.CardCode = "CL01";
+                    oPago.DocDate = DateTime.Today;
+                    oPago.DocDate = DateTime.Today;
+
+                    oPago.CashSum = 200;
+
+                    oPago.Invoices.DocEntry = Int32.Parse("700");
+                    oPago.Invoices.SumApplied = 200;
+
+                    if (oPago.Add() != 0)
+                    {
+                        this.Error = this.oCom.GetLastErrorDescription();
+                        if (this.oCom.InTransaction)
+                        {
+                            this.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
+                        }
+                    }else
+                    {
+                        if (this.oCom.InTransaction)
+                        {
+                            this.oCom.EndTransaction(BoWfTransOpt.wf_Commit);
+                        }
+                    }
+                }
+                
+                
+
+
+
+            }catch(Exception e)
+            {
+                this.Error = e.Message;
+                if (this.oCom.InTransaction)
+                {
+                    this.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
+                }
+            }
+            finally
+            {
+                if (this.oCom != null)
+                {
+                    if (this.oCom.InTransaction)
+                    {
+                        this.oCom.EndTransaction(BoWfTransOpt.wf_RollBack);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
 
         #endregion
 

@@ -330,5 +330,143 @@ namespace ConexionSAP
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string DocEntry = "";
+                this.sap.CrearTransferencia(out DocEntry);
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Transferencia #" + DocEntry + " Creado con exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string DocEntry = "";
+                this.sap.CrearPago(out DocEntry,669);
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Pago #" + DocEntry + " Creado con exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Datos = "";
+                this.sap.Record(out Datos, 669);
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show(Datos);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string DocEntry = "";
+                this.sap.CrearPago(out DocEntry, "647");
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Pago #" + DocEntry + " Creado con exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string DocEntry = "";
+                this.sap.CrearFacturaConDocumentoBase(out DocEntry,"556");
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Factura #" + DocEntry + " Creado con exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string DocEntry = "";
+                this.sap.EjemploTransaction();
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
     }
 }
