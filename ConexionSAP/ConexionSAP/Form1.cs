@@ -468,5 +468,94 @@ namespace ConexionSAP
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Error1 = "";
+                string Error2 = "";
+                this.sap.CrearTabla("Padre", "Tabla padre", SAPbobsCOM.BoUTBTableType.bott_Document);
+                Error1 = this.sap.Error;
+                this.sap.CrearTabla("Hija", "Tabla Hija", SAPbobsCOM.BoUTBTableType.bott_DocumentLines);
+                Error2 = this.sap.Error;
+                if (Error1 != "" || Error2 != "")
+                {
+                    MessageBox.Show(Error1+" "+Error2);
+                }else
+                {
+                    MessageBox.Show("Tablas Agregadas");
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Error1 = "";
+                string Error2 = "";
+                this.sap.CrearUDF("@PADRE","Precio","Precio de Venta",10,SAPbobsCOM.BoFieldTypes.db_Float,SAPbobsCOM.BoFldSubTypes.st_Price,SAPbobsCOM.BoYesNoEnum.tNO,"","",null);
+                Error1 = this.sap.Error;
+
+                List<ValoresValidos> Valores;
+                Valores = new List<ValoresValidos>();
+
+                ValoresValidos ValoresTipo;
+                ValoresTipo = new ValoresValidos();
+                ValoresTipo.Valor = "Valor1";
+                ValoresTipo.descripcion = "Tipo numero 1";
+
+                ValoresValidos ValoresTipo2;
+                ValoresTipo2 = new ValoresValidos();
+                ValoresTipo2.Valor = "Valor2";
+                ValoresTipo2.descripcion = "Tipo numero 2";
+
+                Valores.Add(ValoresTipo);
+                Valores.Add(ValoresTipo2);
+
+                this.sap.CrearUDF("@PADRE", "Tipo", "Tipos definidos", 15, SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, SAPbobsCOM.BoYesNoEnum.tNO, "", "", Valores);
+                //this.sap.CrearUDF("@TABLA1", "Tipo", "Tipos definidos", 15, SAPbobsCOM.BoFieldTypes.db_Alpha, SAPbobsCOM.BoFldSubTypes.st_None, SAPbobsCOM.BoYesNoEnum.tNO, "", "", null);
+                Error2 = this.sap.Error;
+                if (Error1 != "" || Error2 != "")
+                {
+                    MessageBox.Show(Error1 + " " + Error2);
+                }
+                else
+                {
+                    MessageBox.Show("UDFS Agregados");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string DocEntry = "";
+                this.sap.CrearUDO();
+
+                if (this.sap.Error != "")
+                {
+                    MessageBox.Show(this.sap.Error);
+                }
+                else
+                {
+                    MessageBox.Show("exito");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
     }
 }

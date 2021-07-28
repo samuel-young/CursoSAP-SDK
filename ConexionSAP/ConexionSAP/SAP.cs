@@ -1140,9 +1140,219 @@ namespace ConexionSAP
 
         #endregion
 
+        #region TABLAS
+
+        public void CrearTabla(string Nombre, string Desc,SAPbobsCOM.BoUTBTableType Type)
+        {
+            SAPbobsCOM.IUserTablesMD oTabla = null;
+            try
+            {
+                this.Error = "";
+                oTabla = (SAPbobsCOM.IUserTablesMD)this.oCom.GetBusinessObject(BoObjectTypes.oUserTables);
+
+                if (!oTabla.GetByKey(Nombre))
+                {
+                    oTabla.TableName = Nombre;
+                    oTabla.TableDescription = Desc;
+                    oTabla.TableType = Type;
+
+                    if (oTabla.Add() != 0)
+                    {
+                        this.Error = this.oCom.GetLastErrorDescription();
+                    }
+                }else
+                {
+                    this.Error = "Tabla ya existe";
+                }
+                
+
+            }catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oTabla != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oTabla);
+                    oTabla = null;
+                    GC.Collect();
+                }
+                
+            }
+        }
+
+        #endregion
+
+        #region UDF
+
+        public void CrearUDF(string Tabla, string Code, string Desc, int Tam, 
+                            SAPbobsCOM.BoFieldTypes Type,SAPbobsCOM.BoFldSubTypes SubType,
+                            SAPbobsCOM.BoYesNoEnum obligatorio,string TablaEnlazada,
+                            string VDefecto,List<ValoresValidos> Valores)
+        {
+            SAPbobsCOM.UserFieldsMD oUDF = null;
+            SAPbobsCOM.Recordset oRec = null;
+            try
+            {
+
+                this.Error = "";
+                oUDF = (SAPbobsCOM.UserFieldsMD)this.oCom.GetBusinessObject(BoObjectTypes.oUserFields);
+                oRec = (SAPbobsCOM.Recordset)this.oCom.GetBusinessObject(BoObjectTypes.BoRecordset);
+
+                int Key;
+                oRec.DoQuery("SELECT T0.[FieldID] FROM CUFD T0 WHERE T0.[TableID]='"+Tabla+"' AND T0.[AliasID]='"+Code+"'");
+                bool Existe = false;
+                if (oRec.RecordCount > 0)
+                {
+                    
+                    if (oRec.Fields.Item("FieldID").Value.ToString() != "")
+                    {
+                        Key = Convert.ToInt32(oRec.Fields.Item("FieldID").Value.ToString());
+                        oUDF.GetByKey(Tabla, Key);
+                        
+                        Existe = true;
+                    }
+
+                }
+
+                if (oRec != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oRec);
+                    oRec = null;
+                    GC.Collect();
+                }
+
+                oUDF.TableName = Tabla;
+                    oUDF.Name = Code;
+                    oUDF.Description = Desc;
+                    oUDF.Size = Tam;
+                    oUDF.Type = Type;
+                    oUDF.SubType = SubType;
+                    oUDF.Mandatory = obligatorio;
+
+                    if (TablaEnlazada != "")
+                    {
+                        oUDF.LinkedTable = TablaEnlazada;
+                    }
+                    if (VDefecto != "")
+                    {
+                        oUDF.DefaultValue = VDefecto;
+                    }
+                    if (Valores != null)
+                    {
+                        for (int i = 0; i < Valores.Count; i++)
+                        {
+                            oUDF.ValidValues.Value = Valores[i].Valor;
+                            oUDF.ValidValues.Description = Valores[i].descripcion;
+                            oUDF.ValidValues.Add();
+                        }
+
+                    }
+
+                    if (!Existe)
+                    {
+                        if (oUDF.Add() != 0)
+                        {
+                            this.Error = this.oCom.GetLastErrorDescription();
+                        }
+                    }else
+                    {
+                        if (oUDF.Update() != 0)
+                        {
+                            this.Error = this.oCom.GetLastErrorDescription();
+                        }
+                    }
+
+                    
+                
+
+
+               
+
+
+            }
+            catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oUDF != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oUDF);
+                    oUDF = null;
+                    GC.Collect();
+                }
+            }
+        }
+
+        #endregion
+
+        #region UDOS
+
+        public void CrearUDO()
+        {
+            SAPbobsCOM.UserObjectsMD oUDO = null;
+            try
+            {
+                this.Error = "";
+                oUDO = (SAPbobsCOM.UserObjectsMD)this.oCom.GetBusinessObject(BoObjectTypes.oUserObjectsMD);
+
+                oUDO.Code = "CPADRE";
+                oUDO.Name = "Udo Padre";
+                oUDO.ObjectType = SAPbobsCOM.BoUDOObjType.boud_Document;
+                oUDO.TableName = "PADRE";
+
+                oUDO.CanFind = SAPbobsCOM.BoYesNoEnum.tYES;
+                oUDO.CanClose = SAPbobsCOM.BoYesNoEnum.tYES;
+                oUDO.CanDelete = SAPbobsCOM.BoYesNoEnum.tYES;
+                oUDO.CanCancel = SAPbobsCOM.BoYesNoEnum.tNO;
+                oUDO.CanCreateDefaultForm = SAPbobsCOM.BoYesNoEnum.tNO;
+
+                //oUDO.FindColumns.ColumnAlias = "Precio";
+                //oUDO.FindColumns.Add();
+
+                //oUDO.FindColumns.ColumnAlias = "Tipo";
+                //oUDO.FindColumns.Add();
+
+                oUDO.ChildTables.TableName = "HIJA";
+                oUDO.ChildTables.Add();
+
+                if (oUDO.Add() != 0)
+                {
+                    this.Error = this.oCom.GetLastErrorDescription();
+                }
+
+            }
+            catch(Exception e)
+            {
+                this.Error = e.Message;
+            }
+            finally
+            {
+                if (oUDO != null)
+                {
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(oUDO);
+                    oUDO = null;
+                    GC.Collect();
+                }
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
 
     }
+
+    class ValoresValidos
+    {
+        public string Valor;
+        public string descripcion;
+    }
+
+
 }
