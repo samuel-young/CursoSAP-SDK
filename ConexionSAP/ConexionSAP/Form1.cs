@@ -557,5 +557,30 @@ namespace ConexionSAP
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string Error1 = "";
+                string Error2 = "";
+                this.sap.CrearTabla("DocInter1", "Doc Intercompany", SAPbobsCOM.BoUTBTableType.bott_Document);
+                Error1 = this.sap.Error;
+                this.sap.CrearTabla("DocInter2", "Doc Intercompany Lineas", SAPbobsCOM.BoUTBTableType.bott_DocumentLines);
+                Error2 = this.sap.Error;
+                if (Error1 != "" || Error2 != "")
+                {
+                    MessageBox.Show(Error1 + " " + Error2);
+                }
+                else
+                {
+                    MessageBox.Show("Tablas Agregadas");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
     }
 }
