@@ -20,7 +20,7 @@
 </style>
 
 		<meta name="csrf-param" content="authenticity_token" />
-<meta name="csrf-token" content="971LpLozoJ6VJ4Gdbqf5DcX96cQE7CReQvDIpJ8PkJccLrYKL6OGZvLKjM8rxb62DL028p4mj7uFxPiIU1vYpQ==" />
+<meta name="csrf-token" content="tnlLTxoepqoQHuPBi6hwcqSjfCYyOCF/NQIGmdNxdHtd6rbhj46AUnfz7pPOyjfJbeOjEKjyipryNja1HyU8SQ==" />
 		<style id="user-css-output" type="text/css"></style>
 	</head>
 	<body class="reveal-viewport theme-font-montserrat theme-color-grey-blue"">
@@ -236,13 +236,158 @@ finally
 <div class="sl-block" data-block-type="text" style="width: 806px; left: 63.3242px; top: 48.2256px; height: auto;" data-block-id="12ba171fbc69ec166bffb88dc477c746" data-name="text-9dc237"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 76%;">
 <h1> Transactions</h1>
 </div></div>
-<div class="sl-block" data-block-type="image" data-name="image-eabf00" data-block-id="7071c15843911ddde017d51637551005" style="width: 806.4px; height: 471.56px; left: 86.8937px; top: 147.866px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="985" data-natural-height="576" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8790182/pasted-from-clipboard.png"></div></div></section>
+<div class="sl-block" data-block-type="image" data-name="image-eabf00" data-block-id="7071c15843911ddde017d51637551005" style="width: 806.4px; height: 471.56px; left: 86.8937px; top: 147.866px; min-width: 1px; min-height: 1px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="985" data-natural-height="576" data-lazy-loaded="" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8790182/pasted-from-clipboard.png"></div></div></section><section data-id="15e3e7c27d11155dee13e3647baa3c0c">
+<div class="sl-block" data-block-type="text" style="width: 806px; left: 65.7847px; top: 194.024px; height: auto;" data-name="text-9dc237" data-block-id="b4fa724a8d7f2f341d52df05db950aae"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 76%;">
+<h1> Meta Data Objects</h1>
+</div></div>
+<div class="sl-block" data-block-type="text" data-name="text-cac713" style="height: auto; width: 600px; left: 144.111px; top: 256px;" data-block-id="27681b55efbc110cd845b6769957fd99"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-align: center; font-size: 111%;">
+<p> </p>
+
+<ul>
+	<li>UserFieldsMD</li>
+	<li>UserTablesMD</li>
+	<li>UserObjectsMD</li>
+</ul>
+</div></div></section><section data-id="595893841269a6d7f429cebe61346e46"><div class="sl-block" data-block-type="image" data-name="image-0a1c0f" data-block-id="99220c82adf9fe0cbcea862c9e21bed1" style="width: 915.934px; height: 468.913px; left: 22.033px; top: 118.908px;"><div class="sl-block-content" style="z-index: 10;"><img style="" data-natural-width="1297" data-natural-height="664" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8798049/pasted-from-clipboard.png"></div></div></section><section data-id="d33c9c05b17f3b64bd798fa0c9f34a67"><div class="sl-block" data-block-type="code" data-name="code-7eb673" data-block-id="15479bbc06ba87f3798d0931e0cfb8f5" style="width: 899.263px; height: 643.186px; left: 30.3685px; top: 28.407px;"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="osx" style="z-index: 10;"><pre class="cs" style="font-size: 16px; line-height: 19px;"><code data-line-numbers="">SAPbobsCOM.UserTablesMD oUsrTble;
+
+oUsrTble = (SAPbobsCOM.UserTablesMD)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserTables);
+
+if (!oUsrTble.GetByKey(Name))
+{
+    oUsrTble.TableName = Name;
+    oUsrTble.TableDescription = Description;
+    oUsrTble.TableType = Type;
+    int ErrNo = oCompany.GetLastErrorCode();
+    ErrNo = oUsrTble.Add();
+    string errMsg = oCompany.GetLastErrorDescription();
+    if (ErrNo != 0)
+    {
+    	return errMsg;
+    }
+    else
+    {
+    	return "Ingresada tabla ";
+	}
+}
+else
+{
+	return "(ERROR) tabla Ya existe.";
+}
+
+	System.Runtime.InteropServices.Marshal.ReleaseComObject(oUsrTble);
+    oUsrTble = null;
+    GC.Collect();</code></pre></div></div></section><section data-id="51fc7e56952d458b09ddde87027f3d46"><div class="sl-block" data-block-type="image" data-name="image-55fa5b" data-block-id="76e0e64bfc8cd1de75b4f55058ec512f" style="width: 872.401px; height: 444.727px; left: 43.7995px; top: 115.273px;"><div class="sl-block-content" style="z-index: 10;"><img style="" data-natural-width="1279" data-natural-height="652" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8798033/pasted-from-clipboard.png"></div></div></section><section data-id="9dc7c24dd5956220e5a022d6cd62f33f"><div class="sl-block" data-block-type="code" data-name="code-d717bd" data-block-id="61b29bb3f994b1dd00fff27bbbd07dd3" style="width: 922.902px; height: 686.173px; left: 13.546px; top: 0px;"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="osx" style="z-index: 10;"><pre class="cs" style="font-size: 16px; line-height: 19px;"><code data-line-numbers="">SAPbobsCOM.UserFieldsMD oUDF;
+
+oUDF = (SAPbobsCOM.UserFieldsMD)oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserFields);
+
+oUDF.TableName = TableName;
+oUDF.Name = Name;
+oUDF.Description = Description;
+oUDF.Type = Type;
+oUDF.SubType = SubType;
+oUDF.EditSize = EditSize;
+oUDF.Mandatory = Obligatorio;
+
+if (ValidValues != null)
+{
+    if (ValidValues.Count &gt; 0)
+    {
+      for (int i = 0; i &lt; ValidValues.Count; i++)
+      {
+          oUDF.ValidValues.Value = ValidValues[i].Valor;
+          oUDF.ValidValues.Description = ValidValues[i].Dscription;
+          oUDF.ValidValues.Add();
+      }
+    }
+}
+
+if (!string.IsNullOrEmpty(LinkedTable))
+{
+	oUDF.LinkedTable = LinkedTable;
+}
+if (!String.IsNullOrEmpty(DefaultValue))
+{
+	oUDF.DefaultValue = DefaultValue;
+}
+
+
+ErrNo = oUDF.Add();
+
+string errMsg = oCompany.GetLastErrorDescription();
+
+if (ErrNo != 0)
+{
+	return errMsg;
+}
+else
+{
+	return name;
+}</code></pre></div></div></section><section data-id="4e1b655d4f78aabddd6716efd3ed9d73"><div class="sl-block" data-block-type="code" data-name="code-f28560" data-block-id="394f7001975efa2e0e82583d64ea2951" style="width: 916.086px; height: 587.11px; left: 16.91px; top: 90.091px;"><div class="sl-block-content notranslate" data-highlight-theme="monokai" data-code-frame="osx" style="z-index: 10;"><pre class="cs" style="font-size: 16px; line-height: 19px;"><code data-line-numbers="">SAPbobsCOM.UserObjectsMD oUsrobject;
+
+oUsrobject = Conexion.oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserObjectsMD);
+oUsrobject.Code = Code;
+oUsrobject.ManageSeries = ManageSeries;
+oUsrobject.Name = Name;
+oUsrobject.ObjectType = Type;
+oUsrobject.TableName = TableName;
+
+oUsrobject.CanCancel = Cancel;
+oUsrobject.CanClose = Close;
+oUsrobject.CanCreateDefaultForm = DefaultForm;
+oUsrobject.CanDelete = Delete;
+oUsrobject.CanFind = Find;
+
+
+for(int i = 0; i &lt; FindColumns.Count; i++)
+{
+    oUsrobject.FindColumns.ColumnAlias = FindColumns[i];
+    oUsrobject.FindColumns.Add();
+}
+
+
+for (int i = 0; i &lt; ChildTables.Count; i++)
+{
+    oUsrobject.ChildTables.TableName = ChildTables[i];
+    oUsrobject.ChildTables.Add();
+}
+            
+ErrNo = oUsrobject.Add();
+int ErrNo = Conexion.oCompany.GetLastErrorCode();
+            
+string errMsg = Conexion.oCompany.GetLastErrorDescription();
+            
+if (ErrNo != 0)
+{
+   return errMsg;
+}
+else
+{
+    return "UDO Agregado";
+}
+System.Runtime.InteropServices.Marshal.ReleaseComObject(oUsrobject);
+oUsrobject = null;
+GC.Collect();</code></pre></div></div>
+<div class="sl-block" data-block-type="text" style="width: 806px; left: 54.5694px; top: 16.091px; height: auto;" data-name="text-9dc237" data-block-id="6f23b6c2a1a8ebdb3d9557d746f99cd4"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 11; color: rgb(241, 194, 50); font-size: 76%;">
+<h1> UserObjectsMD</h1>
+</div></div></section><section data-id="033ec9dcd965ae5dfe7a0f27802322a0"><div class="sl-block" data-block-type="text" style="width: 806px; left: 65.0278px; top: 25.0633px; height: auto;" data-name="text-9dc237" data-block-id="a2d14c6dab8dfee3add21d189430cac0"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 106%;">
+<h1>UI API</h1>
+</div></div>
+<div class="sl-block" data-block-type="image" data-name="image-894222" data-block-id="7736839bc791d1f06b9567b988fa3744" style="width: 861.575px; height: 509.912px; left: 49.2125px; top: 140px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="931" data-natural-height="551" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8801314/pasted-from-clipboard.png"></div></div></section><section data-id="642d037831f68a3eb3e39fdfcf594423"><div class="sl-block" data-block-type="text" style="width: 806px; left: 65.0278px; top: 25.0633px; height: auto;" data-name="text-9dc237" data-block-id="205834fee364f7b735369d1a1f0c65e9"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 76%;">
+<h1>Proceso de inicio de complementos</h1>
+</div></div>
+<div class="sl-block" data-block-type="image" data-name="image-02f427" data-block-id="ad4b74dc9e3ad85d947cb7f8de9eda39" style="width: 923.103px; height: 416.946px; left: 30.8175px; top: 194.8px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="983" data-natural-height="444" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8801760/pasted-from-clipboard.png"></div></div></section><section data-id="b954152f7ecbaea068329f53a69470c6"><div class="sl-block" data-block-type="text" style="width: 806px; left: 65.0278px; top: 25.0633px; height: auto;" data-name="text-9dc237" data-block-id="12d0bf33635b2d3e619d6d50d910940f"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 106%;">
+<h1>Application</h1>
+</div></div>
+<div class="sl-block" data-block-type="image" data-name="image-d9edc5" data-block-id="b433bf3c7529e7e104f935108dae719f" style="width: 923.79px; height: 432.334px; left: 24.2736px; top: 177.443px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="1250" data-natural-height="585" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8801721/pasted-from-clipboard.png"></div></div></section><section data-id="0d394b568f13823d8cdf94b75aee9524"><div class="sl-block" data-block-type="text" style="width: 806px; left: 65.0278px; top: 25.0633px; height: auto;" data-name="text-9dc237" data-block-id="2881788a7b75e146ffa159bc2c9c3801"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10; color: rgb(241, 194, 50); font-size: 106%;">
+<h1>Items</h1>
+</div></div>
+<div class="sl-block" data-block-type="image" data-name="image-e37c84" data-block-id="f31f97915124bcc4ae267dfc059160b8" style="width: 936.044px; height: 421.073px; left: 11.978px; top: 163.41px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="1276" data-natural-height="574" data-src="https://s3.amazonaws.com/media-p.slid.es/uploads/1921426/images/8801753/pasted-from-clipboard.png"></div></div></section>
 			</div>
 		</div>
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null,"editor_grid":true,"editor_grid_on_top":false,"editor_snap":true,"editor_fixed_notes":false,"developer_mode":false,"speaker_layout":null,"speaker_theme":null,"phone_number":null,"phone_country_code":null,"media_sources":null,"export_controls":null,"export_slide_number":null,"export_slide_notes":null,"export_separate_fragments":null,"auto_animate_tutorial_completed":null,"profile_sorting":"created","profile_layout":"grid"},"email":"roquememo11@gmail.com","notify_on_receipt":true,"billing_address":null,"billing_vat_id":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":null,"storage_used":506616,"storage_limit":262144000,"image_upload_limit":10485760,"video_upload_limit":104857600},"deck":{"id":2181189,"slug":"sap-business-one-sdk-71db78","title":"Copy of SAP Business One SDK","description":"","width":960,"height":700,"margin":0.05,"visibility":"all","published_at":"2021-07-13T01:05:35.639Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/aad9105b75d5b2fad3993fb21486218f/thumb.jpg?1626125334","view_count":0,"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"default","theme_id":null,"theme_font":"montserrat","theme_color":"grey-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"shuffle":null,"should_loop":false,"share_notes":null,"slide_number":null,"slide_count":15,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":null,"data_updated_at":1627070965628,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":null,"notes":{}},"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}}};
+	var SLConfig = {"current_user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null,"editor_grid":true,"editor_grid_on_top":false,"editor_snap":true,"editor_fixed_notes":false,"developer_mode":false,"speaker_layout":null,"speaker_theme":null,"phone_number":null,"phone_country_code":null,"media_sources":null,"export_controls":null,"export_slide_number":null,"export_slide_notes":null,"export_separate_fragments":null,"auto_animate_tutorial_completed":null,"profile_sorting":"created","profile_layout":"grid"},"email":"roquememo11@gmail.com","notify_on_receipt":true,"billing_address":null,"billing_vat_id":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":null,"storage_used":1543172,"storage_limit":262144000,"image_upload_limit":10485760,"video_upload_limit":104857600},"deck":{"id":2181189,"slug":"sap-business-one-sdk-71db78","title":"Copy of SAP Business One SDK","description":"","width":960,"height":700,"margin":0.05,"visibility":"all","published_at":"2021-07-13T01:05:35.639Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/aad9105b75d5b2fad3993fb21486218f/thumb.jpg?1626125334","view_count":0,"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"default","theme_id":null,"theme_font":"montserrat","theme_color":"grey-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"shuffle":null,"should_loop":false,"share_notes":null,"slide_number":null,"slide_count":25,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":null,"data_updated_at":1627523525598,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":null,"notes":{}},"user":{"id":1921426,"username":"guillermoroque","name":"Guillermo Roque","description":null,"thumbnail_url":"https://lh3.googleusercontent.com/a-/AOh14GhVXtwd4GrniT373uVbmHjP2inrNovqx5aNFI424g=s96-c","account_type":"default","team_id":null,"settings":{"id":17379712,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}}};
 </script>
 
 		<script>
